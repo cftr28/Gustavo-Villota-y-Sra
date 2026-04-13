@@ -15,7 +15,6 @@
             --fuente: 'Georgia', serif;
         }
 
-        /* Reset para evitar scrolls accidentales y mejorar el toque en móvil */
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -26,7 +25,6 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            /* Soporte para navegadores móviles antiguos y modernos */
             height: -webkit-fill-available;
             font-family: var(--fuente);
             background-color: var(--fondo);
@@ -40,24 +38,91 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            /* Usa la variable calculada por JS para evitar saltos en iOS */
             height: calc(var(--vh, 1vh) * 100);
             width: 100%;
             transition: opacity 0.8s ease;
             padding: 20px;
         }
 
-        .texto-guia {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            background: linear-gradient(to right, var(--dorado-oscuro), var(--dorado-brillante), var(--dorado-oscuro));
-            -webkit-background-clip: text; /* Prefijo Webkit */
-            background-clip: text;         /* Propiedad estándar (Soluciona el error) */
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 3px;
-            font-weight: bold;
+        /* Contenedor del sobre responsivo */
+        .sobre-wrapper {
+            position: relative;
+            width: 85vw; /* Un poco más pequeño para dejar aire a los lados */
+            max-width: 400px; /* Tamaño máximo para tablets/escritorio */
+            aspect-ratio: 3 / 2;
             cursor: pointer;
-            text-transform: uppercase;
+            perspective: 1000px;
+        }
+
+        .sobre-cuerpo {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-sobre);
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 10;
+        }
+
+        /* SOLAPA CORREGIDA: Usa SVG para que sea 100% responsiva sin fallos de borde */
+        .solapa-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            fill: var(--color-sobre);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+            z-index: 30;
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.2));
+        }
+
+        .monograma {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.2);
+            font-size: clamp(30px, 8vw, 50px);
+            letter-spacing: 8px;
+            font-weight: 300;
+            pointer-events: none;
+        }
+
+        .sello {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55px;
+            height: 55px;
+            background-color: var(--color-sello);
+            border-radius: 50%;
+            z-index: 40;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: opacity 0.4s;
+        }
+
+        .sello::after {
+            content: "🌿"; 
+            font-size: 22px;
+            opacity: 0.8;
+        }
+
+        .texto-guia {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            background: linear-gradient(to right, var(--dorado-oscuro), var(--dorado-brillante), var(--dorado-oscuro));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            font-weight: bold;
             animation: brilloDorado 2.5s infinite linear;
             background-size: 200% auto;
             text-align: center;
@@ -67,86 +132,6 @@
             0% { background-position: 0% center; opacity: 0.8; }
             50% { opacity: 1; }
             100% { background-position: 200% center; opacity: 0.8; }
-        }
-
-        /* Contenedor del sobre responsivo */
-        .sobre-wrapper {
-            position: relative;
-            width: 90vw;
-            max-width: 500px;
-            aspect-ratio: 500 / 320;
-            cursor: pointer;
-            perspective: 1500px;
-        }
-
-        .sobre-cuerpo {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-sobre);
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .solapa {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 0;
-            /* Triángulo basado en porcentajes del contenedor */
-            border-left: 45vw solid transparent;
-            border-right: 45vw solid transparent;
-            border-top: 35vw solid var(--color-sobre); 
-            transform-origin: top;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 30;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
-        }
-
-        /* Ajuste de solapa para pantallas grandes */
-        @media (min-width: 600px) {
-            .solapa {
-                border-left-width: 250px;
-                border-right-width: 250px;
-                border-top-width: 200px;
-            }
-        }
-
-        .monograma {
-            position: absolute;
-            top: -120px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255, 255, 255, 0.15);
-            font-size: clamp(40px, 10vw, 70px);
-            letter-spacing: 10px;
-            font-weight: 300;
-        }
-
-        .sello {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background-color: var(--color-sello);
-            border-radius: 50%;
-            z-index: 40;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 2px 4px 12px rgba(0,0,0,0.4);
-            transition: opacity 0.4s;
-        }
-
-        .sello::after {
-            content: "🌿"; 
-            font-size: 25px;
-            opacity: 0.7;
         }
 
         /* --- VISTA 2: EL PASE --- */
@@ -162,32 +147,30 @@
             transition: opacity 1.2s ease;
             z-index: 100;
             padding: 20px;
-            overflow-y: auto;
         }
 
         .tarjeta-detalle {
             width: 100%;
-            max-width: 450px;
-            padding: 40px 25px;
+            max-width: 380px;
+            padding: 30px 20px;
             border: 1px solid #eee;
             text-align: center;
             background: #fff;
             box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-            margin: auto;
         }
 
-        .boda-titulo { font-size: clamp(1.8rem, 8vw, 2.5rem); color: var(--color-sobre); margin: 10px 0; }
-        .boda-subtitulo { font-size: 0.8rem; letter-spacing: 3px; color: #a18a68; text-transform: uppercase; }
+        .boda-titulo { font-size: clamp(1.6rem, 7vw, 2.2rem); color: var(--color-sobre); margin: 10px 0; }
+        .boda-subtitulo { font-size: 0.75rem; letter-spacing: 2px; color: #a18a68; text-transform: uppercase; }
         
         .caja-invitado {
             background-color: #f9f7f5;
-            padding: 25px 15px;
+            padding: 20px 10px;
             margin: 20px 0;
             border-radius: 4px;
         }
 
-        .nombre-invitado { font-size: 1.4rem; font-weight: bold; color: #222; }
-        .pases-n { color: var(--color-sobre); font-weight: bold; font-size: 1rem; margin-top: 5px; }
+        .nombre-invitado { font-size: 1.2rem; font-weight: bold; color: #222; }
+        .pases-n { color: var(--color-sobre); font-weight: bold; font-size: 0.9rem; margin-top: 5px; }
 
         .tag-fiesta {
             font-weight: bold;
@@ -195,14 +178,14 @@
             letter-spacing: 2px;
             margin-bottom: 10px;
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
-        .info-evento { font-size: 1rem; line-height: 1.6; color: #444; }
+        .info-evento { font-size: 0.95rem; line-height: 1.5; color: #444; }
 
-        /* Clases de animación */
-        .abrir-sobre .solapa { transform: rotateX(180deg); z-index: 5; }
-        .abrir-sobre .sello { opacity: 0; }
+        /* Estados de animación */
+        .abrir-sobre .solapa-svg { transform: rotateX(180deg); z-index: 5; }
+        .abrir-sobre .sello { opacity: 0; pointer-events: none; }
 
     </style>
 </head>
@@ -210,9 +193,11 @@
 
     <div id="seccion-sobre">
         <div class="sobre-wrapper" id="sobre" onclick="ejecutarApertura()">
-            <div class="solapa">
-                <div class="monograma">DD</div>
-            </div>
+            <svg class="solapa-svg" viewBox="0 0 500 320" preserveAspectRatio="none">
+                <polygon points="0,0 500,0 250,220" />
+            </svg>
+            
+            <div class="monograma">DD</div>
             <div class="sello"></div>
             <div class="sobre-cuerpo"></div>
         </div>
@@ -236,12 +221,12 @@
                 A partir de las 19:30 hs
             </div>
 
-            <p style="margin-top: 40px; font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 2px;">Favor presentar este pase al ingresar</p>
+            <p style="margin-top: 30px; font-size: 0.65rem; color: #aaa; text-transform: uppercase; letter-spacing: 2px;">Favor presentar este pase al ingresar</p>
         </div>
     </div>
 
     <script>
-        // Fix para altura real en dispositivos móviles (ignore barras de navegación)
+        // Fix para altura real en móviles (evita el problema de la barra de direcciones)
         function ajustarAltura() {
             let vh = window.innerHeight * 0.01;
             document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -255,10 +240,10 @@
             const pantallaSobre = document.getElementById('seccion-sobre');
             const pantallaPase = document.getElementById('seccion-pase');
 
-            // 1. Abrir la solapa (animación CSS)
+            // 1. Iniciar animación del sobre
             sobre.classList.add('abrir-sobre');
 
-            // 2. Transición suave entre pantallas
+            // 2. Transición suave a la tarjeta
             setTimeout(() => {
                 pantallaSobre.style.opacity = '0';
                 
